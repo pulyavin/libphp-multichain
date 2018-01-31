@@ -15,7 +15,7 @@
     }
   ],
   "require": {
-    "php": ">=5.4.0",
+    "php": ">=7.0",
     "fguillot/json-rpc": "~v1.2.3"
   },
   "require-dev": {

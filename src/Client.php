@@ -25,9 +25,9 @@ class Client
      *
      * @var array
      */
-    private $headers = array(
+    private $headers = [
         'User-Agent: Unofficial Multichain PHP Client <https://github.com/kunstmaan/libphp-multichain>',
-    );
+    ];
 
     /**
      * Enable debug output to the php error log
@@ -39,10 +39,10 @@ class Client
     /**
      * Constructor
      *
-     * @param  string $url Multichain JSON RPC url + port
-     * @param  string $username Multichain JSON RPC username
-     * @param  string $password Multichain JSON RPC password
-     * @param  integer $timeout HTTP timeout
+     * @param string $url Multichain JSON RPC url + port
+     * @param string $username Multichain JSON RPC username
+     * @param string $password Multichain JSON RPC password
+     * @param integer $timeout HTTP timeout
      */
     public function __construct($url, $username, $password, $timeout = 3)
     {
@@ -59,10 +59,12 @@ class Client
     public function setDebug($debug)
     {
         $this->debug = $debug;
+
         if ($debug) {
             $httpClient = $this->jsonRPCClient->getHttpClient();
             $httpClient->withDebug();
         }
+
         return $this;
     }
 
@@ -110,12 +112,11 @@ class Client
      * control whose funds are spent in each transaction. Unlike bitcoin-style accounts, this method maps directly to
      * the blockchain protocol.
      *
-     * @param string $account
      * @return mixed
      */
     public function getNewAddress()
     {
-        return $this->jsonRPCClient->execute("getnewaddress", array());
+        return $this->jsonRPCClient->execute("getnewaddress", []);
     }
 
     /**
@@ -127,7 +128,7 @@ class Client
      */
     public function dumpPrivateKey($address)
     {
-        return $this->jsonRPCClient->execute("dumpprivkey", array($address));
+        return $this->jsonRPCClient->execute("dumpprivkey", [$address]);
     }
 
     /**
@@ -138,12 +139,12 @@ class Client
      * @param $privkey
      * @param string $label
      * @param bool $rescan
+     *
      * @return mixed
      */
     public function importPrivateKey($privkey, $label = "", $rescan = true)
     {
-
-        return $this->jsonRPCClient->execute("importprivkey", array($privkey, $label, $rescan));
+        return $this->jsonRPCClient->execute("importprivkey", [$privkey, $label, $rescan]);
     }
 
 
@@ -159,8 +160,7 @@ class Client
      */
     public function addMultisigAddress($nRequired, $addresses)
     {
-
-        return $this->jsonRPCClient->execute("addmultisigaddress", array($nRequired, $addresses));
+        return $this->jsonRPCClient->execute("addmultisigaddress", [$nRequired, $addresses]);
     }
 
     /**
@@ -173,11 +173,12 @@ class Client
      * @param $address
      * @param string $label
      * @param bool $rescan
+     *
      * @return mixed
      */
     public function importAddress($address, $label = "", $rescan = true)
     {
-        return $this->jsonRPCClient->execute("importaddress", array($address, $label, $rescan));
+        return $this->jsonRPCClient->execute("importaddress", [$address, $label, $rescan]);
     }
 
     /**
@@ -189,11 +190,12 @@ class Client
      * @param bool $verbose
      * @param string $count
      * @param string $start
+     *
      * @return mixed
      */
     public function listAddresses($addresses = "*", $verbose = false, $count = "MAX", $start = "-count")
     {
-        return $this->jsonRPCClient->execute("listaddresses", array($addresses, $verbose, $count, $start));
+        return $this->jsonRPCClient->execute("listaddresses", [$addresses, $verbose, $count, $start]);
     }
 
     /**
@@ -202,11 +204,12 @@ class Client
      * (used for signatures) is provided.
      *
      * @param int $count
+     *
      * @return mixed
      */
     public function createKeypairs($count = 1)
     {
-        return $this->jsonRPCClient->execute("createkeypairs", array($count));
+        return $this->jsonRPCClient->execute("createkeypairs", [$count]);
     }
 
     /**
@@ -216,12 +219,12 @@ class Client
      *
      * @param int $nRequired
      * @param array $addresses
+     *
      * @return mixed
      */
     public function createMultisig($nRequired, $addresses)
     {
-
-        return $this->jsonRPCClient->execute("createmultisig", array($nRequired, $addresses));
+        return $this->jsonRPCClient->execute("createmultisig", [$nRequired, $addresses]);
     }
 
     /**
@@ -235,11 +238,12 @@ class Client
      * @param string $amount
      * @param string $comment
      * @param string $commentTo
+     *
      * @return mixed
      */
     public function sendToAddress($address, $amount, $comment = '', $commentTo = '')
     {
-        return $this->jsonRPCClient->execute("sendtoaddress", array($address, $amount, $comment, $commentTo));
+        return $this->jsonRPCClient->execute("sendtoaddress", [$address, $amount, $comment, $commentTo]);
     }
 
     /**
@@ -266,11 +270,12 @@ class Client
      * @param $txId
      * @param $vOut
      * @param $extra ({"asset":qty, ...})
+     *
      * @return mixed
      */
     public function appendRawExchange($hexString, $txId, $vOut, $extra)
     {
-        return $this->jsonRPCClient->execute("appendrawexchange", array($hexString, $txId, $vOut, $extra));
+        return $this->jsonRPCClient->execute("appendrawexchange", [$hexString, $txId, $vOut, $extra]);
     }
 
     /**
@@ -280,11 +285,12 @@ class Client
      *
      * @param $txHex
      * @param $dataHex
+     *
      * @return mixed
      */
     public function appendRawMetadata($txHex, $dataHex)
     {
-        return $this->jsonRPCClient->execute("appendrawmetadata", array($txHex, $dataHex));
+        return $this->jsonRPCClient->execute("appendrawmetadata", [$txHex, $dataHex]);
     }
 
     /**
@@ -301,11 +307,12 @@ class Client
      * @param int $minInputs
      * @param int $maxInputs
      * @param int $maxTime
+     *
      * @return mixed
      */
     public function combineUnspent($addresses = "*", $minConf = 1, $maxCombines = 1, $minInputs = 10, $maxInputs = 100, $maxTime = 30)
     {
-        return $this->jsonRPCClient->execute("combineunspent", array($addresses, $minConf, $maxCombines, $minInputs, $maxInputs, $maxTime));
+        return $this->jsonRPCClient->execute("combineunspent", [$addresses, $minConf, $maxCombines, $minInputs, $maxInputs, $maxTime]);
     }
 
     /**
@@ -319,11 +326,12 @@ class Client
      * @param $txId
      * @param $vOut
      * @param $extra
+     *
      * @return mixed
      */
     public function createRawExchange($txId, $vOut, $extra)
     {
-        return $this->jsonRPCClient->execute("createrawexchange", array($txId, $vOut, $extra));
+        return $this->jsonRPCClient->execute("createrawexchange", [$txId, $vOut, $extra]);
     }
 
     /**
@@ -339,11 +347,12 @@ class Client
      *
      * @param $hexString
      * @param bool $verbose
+     *
      * @return mixed
      */
     public function decodeRawExchange($hexString, $verbose = false)
     {
-        return $this->jsonRPCClient->execute("decoderawexchange", array($hexString, $verbose));
+        return $this->jsonRPCClient->execute("decoderawexchange", [$hexString, $verbose]);
     }
 
     /**
@@ -352,11 +361,12 @@ class Client
      * be used on an exchange transaction, check the candisable field of the output of decoderawexchange.
      *
      * @param $hexString
+     *
      * @return mixed
      */
     public function disableRawTransaction($hexString)
     {
-        return $this->jsonRPCClient->execute("disablerawtransaction", array($hexString));
+        return $this->jsonRPCClient->execute("disablerawtransaction", [$hexString]);
     }
 
     /**
@@ -366,11 +376,12 @@ class Client
      * @param $address
      * @param int $minConf
      * @param bool $includeLocked
+     *
      * @return mixed
      */
     public function getAddressBalances($address, $minConf = 1, $includeLocked = false)
     {
-        return $this->jsonRPCClient->execute("getaddressbalances", array($address, $minConf, $includeLocked));
+        return $this->jsonRPCClient->execute("getaddressbalances", [$address, $minConf, $includeLocked]);
     }
 
     /**
@@ -378,11 +389,12 @@ class Client
      * address, formatted like the output of the validateaddress command.
      *
      * @param bool $verbose
+     *
      * @return mixed
      */
     public function getAddresses($verbose = false)
     {
-        return $this->jsonRPCClient->execute("getaddresses", array($verbose));
+        return $this->jsonRPCClient->execute("getaddresses", [$verbose]);
     }
 
     /**
@@ -392,11 +404,12 @@ class Client
      * @param $address
      * @param $txId
      * @param bool $verbose
+     *
      * @return mixed
      */
     public function getAddressTransaction($address, $txId, $verbose = false)
     {
-        return $this->jsonRPCClient->execute("getaddresstransaction", array($address, $txId, $verbose));
+        return $this->jsonRPCClient->execute("getaddresstransaction", [$address, $txId, $verbose]);
     }
 
     /**
@@ -409,11 +422,12 @@ class Client
      * @param int $minConf
      * @param bool $includeWatchOnly
      * @param bool $includeLocked
+     *
      * @return mixed
      */
     public function getAssetBalances($account = "", $minConf = 1, $includeWatchOnly = false, $includeLocked = false)
     {
-        return $this->jsonRPCClient->execute("getassetbalances", array($account, $minConf, $includeWatchOnly, $includeLocked));
+        return $this->jsonRPCClient->execute("getassetbalances", [$account, $minConf, $includeWatchOnly, $includeLocked]);
     }
 
     /**
@@ -424,22 +438,24 @@ class Client
      * @param int $minConf
      * @param bool $includeWatchOnly
      * @param bool $includeLocked
+     *
      * @return mixed
      */
     public function getTotalBalances($minConf = 1, $includeWatchOnly = false, $includeLocked = false)
     {
-        return $this->jsonRPCClient->execute("getassetbalances", array($minConf, $includeWatchOnly, $includeLocked));
+        return $this->jsonRPCClient->execute("getassetbalances", [$minConf, $includeWatchOnly, $includeLocked]);
     }
 
     /**
      * Returns information about address including a check for its validity.
      *
      * @param $address
+     *
      * @return mixed
      */
     public function validateAddress($address)
     {
-        return $this->jsonRPCClient->execute("validateaddress", array($address));
+        return $this->jsonRPCClient->execute("validateaddress", [$address]);
     }
 
     /**
@@ -450,11 +466,12 @@ class Client
      * @param $txId
      * @param bool $includeWatchOnly
      * @param bool $verbose
+     *
      * @return mixed
      */
     public function getWalletTransaction($txId, $includeWatchOnly = false, $verbose = false)
     {
-        return $this->jsonRPCClient->execute("getwallettransaction", array($txId, $includeWatchOnly, $verbose));
+        return $this->jsonRPCClient->execute("getwallettransaction", [$txId, $includeWatchOnly, $verbose]);
     }
 
     /**
@@ -470,11 +487,12 @@ class Client
      * @param string $commentTo
      * @param int $startBlock
      * @param null $endBlock
+     *
      * @return mixed
      */
     public function grant($addresses, $permissions, $nativeAmount = 0, $comment = '', $commentTo = '', $startBlock = 0, $endBlock = null)
     {
-        return $this->jsonRPCClient->execute("grant", array($addresses, $permissions, $nativeAmount, $comment, $commentTo, $startBlock, $endBlock));
+        return $this->jsonRPCClient->execute("grant", [$addresses, $permissions, $nativeAmount, $comment, $commentTo, $startBlock, $endBlock]);
     }
 
     /**
@@ -489,11 +507,12 @@ class Client
      * @param string $commentTo
      * @param int $startBlock
      * @param null $endBlock
+     *
      * @return mixed
      */
     public function grantFrom($fromAddress, $toAddresses, $permissions, $nativeAmount = 0, $comment = '', $commentTo = '', $startBlock = 0, $endBlock = null)
     {
-        return $this->jsonRPCClient->execute("grantfrom", array($fromAddress, $toAddresses, $permissions, $nativeAmount, $comment, $commentTo, $startBlock, $endBlock));
+        return $this->jsonRPCClient->execute("grantfrom", [$fromAddress, $toAddresses, $permissions, $nativeAmount, $comment, $commentTo, $startBlock, $endBlock]);
     }
 
     /**
@@ -508,11 +527,13 @@ class Client
      * @param int $nativeAmount
      * @param null $custom
      * @param bool $open
+     *
      * @return mixed
      */
     public function issue($address, $name, $qty, $units = 1, $nativeAmount = 0, $custom = null, $open = false)
     {
-        $params = array($address, array('name' => $name, 'open' => $open), $qty, $units, $nativeAmount);
+        $params = array($address, ['name' => $name, 'open' => $open], $qty, $units, $nativeAmount);
+
         if (!is_null($custom)) {
             $params[] = $custom;
         }
@@ -532,14 +553,17 @@ class Client
      * @param $qty
      * @param int $nativeAmount
      * @param null $custom
+     *
      * @return mixed
      */
     public function issueMore($address, $asset, $qty, $nativeAmount = 0, $custom = null)
     {
-        $params = array($address, $asset, $qty, $nativeAmount);
+        $params = [$address, $asset, $qty, $nativeAmount];
+
         if (!is_null($custom)) {
             $params[] = $custom;
         }
+
         return $this->jsonRPCClient->execute("issuemore", $params);
     }
 
@@ -554,11 +578,12 @@ class Client
      * @param int $units
      * @param int $nativeAmount
      * @param null $custom
+     *
      * @return mixed
      */
     public function issueFrom($fromAddress, $toAddress, $name, $qty, $units = 1, $nativeAmount = 0, $custom = null)
     {
-        return $this->jsonRPCClient->execute("issuefrom", array($fromAddress, $toAddress, $name, $qty, $units, $nativeAmount, $custom));
+        return $this->jsonRPCClient->execute("issuefrom", [$fromAddress, $toAddress, $name, $qty, $units, $nativeAmount, $custom]);
     }
 
     /**
@@ -574,7 +599,7 @@ class Client
      */
     public function listAddressTransactions($address, $count = 10, $skip = 0, $verbose = false)
     {
-        return $this->jsonRPCClient->execute("listaddresstransactions", array($address, $count, $skip, $verbose));
+        return $this->jsonRPCClient->execute("listaddresstransactions", [$address, $count, $skip, $verbose]);
     }
 
     /**
@@ -582,11 +607,12 @@ class Client
      * (see native assets) is provided in asset, then information is only returned about that one asset.
      *
      * @param null $asset
+     *
      * @return mixed
      */
     public function listAssets($asset = null)
     {
-        return $this->jsonRPCClient->execute("listassets", array($asset));
+        return $this->jsonRPCClient->execute("listassets", [$asset]);
     }
 
     /**
@@ -600,11 +626,12 @@ class Client
      * @param string $permissions
      * @param string $addresses
      * @param bool $verbose
+     *
      * @return mixed
      */
     public function listPermissions($permissions = "all", $addresses = "*", $verbose = false)
     {
-        return $this->jsonRPCClient->execute("listpermissions", array($permissions, $addresses, $verbose));
+        return $this->jsonRPCClient->execute("listpermissions", [$permissions, $addresses, $verbose]);
     }
 
     /**
@@ -618,11 +645,12 @@ class Client
      * @param int $skip
      * @param bool $includeWatchOnly
      * @param bool $verbose
+     *
      * @return mixed
      */
     public function listWalletTransactions($count = 10, $skip = 0, $includeWatchOnly = false, $verbose = false)
     {
-        return $this->jsonRPCClient->execute("listwallettransactions", array($count, $skip, $includeWatchOnly, $verbose));
+        return $this->jsonRPCClient->execute("listwallettransactions", [$count, $skip, $includeWatchOnly, $verbose]);
     }
 
     /**
@@ -633,11 +661,12 @@ class Client
      *
      * @param $assetsToLock
      * @param bool $lock
+     *
      * @return mixed
      */
     public function prepareLockUnspent($assetsToLock, $lock = true)
     {
-        return $this->jsonRPCClient->execute("preparelockunspent", array($assetsToLock, $lock));
+        return $this->jsonRPCClient->execute("preparelockunspent", [$assetsToLock, $lock]);
     }
 
     /**
@@ -647,11 +676,12 @@ class Client
      * @param $fromAddress
      * @param $assetsToLock
      * @param bool $lock
+     *
      * @return mixed
      */
     public function prepareLockUnspentFrom($fromAddress, $assetsToLock, $lock = true)
     {
-        return $this->jsonRPCClient->execute("preparelockunspentfrom", array($fromAddress, $assetsToLock, $lock));
+        return $this->jsonRPCClient->execute("preparelockunspentfrom", [$fromAddress, $assetsToLock, $lock]);
     }
 
     /**
@@ -665,11 +695,12 @@ class Client
      * @param int $nativeAmount
      * @param string $comment
      * @param string $commentTo
+     *
      * @return mixed
      */
     public function revoke($addresses, $permissions, $nativeAmount = 0, $comment = '', $commentTo = '')
     {
-        return $this->jsonRPCClient->execute("revoke", array($addresses, $permissions, $nativeAmount, $comment, $commentTo));
+        return $this->jsonRPCClient->execute("revoke", [$addresses, $permissions, $nativeAmount, $comment, $commentTo]);
     }
 
     /**
@@ -682,11 +713,12 @@ class Client
      * @param int $nativeAmount
      * @param string $comment
      * @param string $commentTo
+     *
      * @return mixed
      */
     public function revokeFrom($fromAddress, $toAddresses, $permissions, $nativeAmount = 0, $comment = '', $commentTo = '')
     {
-        return $this->jsonRPCClient->execute("revokefrom", array($fromAddress, $toAddresses, $permissions, $nativeAmount, $comment, $commentTo));
+        return $this->jsonRPCClient->execute("revokefrom", [$fromAddress, $toAddresses, $permissions, $nativeAmount, $comment, $commentTo]);
     }
 
     /**
@@ -701,12 +733,14 @@ class Client
      * @param null $nativeAmount
      * @param string $comment
      * @param string $commentTo
+     *
      * @return mixed
      */
     public function sendAssetFrom($fromAddress, $toAddress, $asset, $qty, $nativeAmount = null, $comment = '', $commentTo = '')
     {
         $nativeAmount = $this->findDefaultMinimumPerOutput($nativeAmount);
-        return $this->jsonRPCClient->execute("sendassetfrom", array($fromAddress, $toAddress, $asset, $qty, $nativeAmount, $comment, $commentTo));
+
+        return $this->jsonRPCClient->execute("sendassetfrom", [$fromAddress, $toAddress, $asset, $qty, $nativeAmount, $comment, $commentTo]);
     }
 
     /**
@@ -730,12 +764,14 @@ class Client
      * @param null $nativeAmount
      * @param string $comment
      * @param string $commentTo
+     *
      * @return mixed
      */
     public function sendAssetToAddress($address, $asset, $qty, $nativeAmount = null, $comment = '', $commentTo = '')
     {
         $nativeAmount = $this->findDefaultMinimumPerOutput($nativeAmount);
-        return $this->jsonRPCClient->execute("sendassettoaddress", array($address, $asset, $qty, $nativeAmount, $comment, $commentTo));
+
+        return $this->jsonRPCClient->execute("sendassettoaddress", [$address, $asset, $qty, $nativeAmount, $comment, $commentTo]);
     }
 
     /**
@@ -747,11 +783,12 @@ class Client
      * @param $amount
      * @param string $comment
      * @param string $commentTo
+     *
      * @return mixed
      */
     public function sendFromAddress($fromAddress, $toAddress, $amount, $comment = '', $commentTo = '')
     {
-        return $this->jsonRPCClient->execute("sendfromaddress", array($fromAddress, $toAddress, $amount, $comment, $commentTo));
+        return $this->jsonRPCClient->execute("sendfromaddress", [$fromAddress, $toAddress, $amount, $comment, $commentTo]);
     }
 
     /**
@@ -777,11 +814,12 @@ class Client
      * @param $toAddress
      * @param $amount
      * @param $dataHex
+     *
      * @return mixed
      */
     public function sendWithMetadataFrom($fromAddress, $toAddress, $amount, $dataHex)
     {
-        return $this->jsonRPCClient->execute("sendwithmetadatafrom", array($fromAddress, $toAddress, $amount, $dataHex));
+        return $this->jsonRPCClient->execute("sendwithmetadatafrom", [$fromAddress, $toAddress, $amount, $dataHex]);
     }
 
     /**
@@ -793,11 +831,12 @@ class Client
      *
      * @param $inputs
      * @param $addresses
+     *
      * @return mixed
      */
     public function createRawTransaction($inputs, $addresses)
     {
-        return $this->jsonRPCClient->execute("createrawtransaction", array($inputs, $addresses));
+        return $this->jsonRPCClient->execute("createrawtransaction", [$inputs, $addresses]);
     }
 
     /**
@@ -807,11 +846,12 @@ class Client
      * transaction.
      *
      * @param $hexString
+     *
      * @return mixed
      */
     public function decodeRawTransaction($hexString)
     {
-        return $this->jsonRPCClient->execute("decoderawtransaction", array($hexString));
+        return $this->jsonRPCClient->execute("decoderawtransaction", [$hexString]);
     }
 
     /**
@@ -820,11 +860,12 @@ class Client
      *
      * @param $hash
      * @param bool $format
+     *
      * @return mixed
      */
     public function getBlock($hash, $format = true)
     {
-        return $this->jsonRPCClient->execute("getblock", array($hash, $format));
+        return $this->jsonRPCClient->execute("getblock", [$hash, $format]);
     }
 
     /**
@@ -834,11 +875,12 @@ class Client
      *
      * @param $txId
      * @param int $verbose
+     *
      * @return mixed
      */
     public function getRawTransaction($txId, $verbose = 0)
     {
-        return $this->jsonRPCClient->execute("getrawtransaction", array($txId, $verbose));
+        return $this->jsonRPCClient->execute("getrawtransaction", [$txId, $verbose]);
     }
 
     /**
@@ -849,11 +891,12 @@ class Client
      * @param $txId
      * @param $vOut
      * @param bool $unconfirmed
+     *
      * @return mixed
      */
     public function getTxOut($txId, $vOut, $unconfirmed = false)
     {
-        return $this->jsonRPCClient->execute("gettxout", array($txId, $vOut, $unconfirmed));
+        return $this->jsonRPCClient->execute("gettxout", [$txId, $vOut, $unconfirmed]);
     }
 
     /**
@@ -865,15 +908,17 @@ class Client
      * @param int $minConf
      * @param int $maxConf
      * @param null $addresses
+     *
      * @return mixed
      */
     public function listUnspent($minConf = 1, $maxConf = 999999, $addresses = null)
     {
-        return $this->jsonRPCClient->execute("listunspent", array($minConf, $maxConf, $addresses));
+        return $this->jsonRPCClient->execute("listunspent", [$minConf, $maxConf, $addresses]);
     }
 
     /**
      * @param $nativeAmount
+     *
      * @return mixed
      */
     private function findDefaultMinimumPerOutput($nativeAmount)
@@ -892,10 +937,11 @@ class Client
      *
      * @param $hex
      * @param bool $allowHighFees
+     *
      * @return mixed
      */
     public function sendRawTransaction($hex, $allowHighFees = false)
     {
-        return $this->jsonRPCClient->execute("sendrawtransaction", array($hex, $allowHighFees));
+        return $this->jsonRPCClient->execute("sendrawtransaction", [$hex, $allowHighFees]);
     }
 }

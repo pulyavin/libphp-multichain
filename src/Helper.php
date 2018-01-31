@@ -4,10 +4,16 @@ namespace pulyavin\Multichain;
 
 class Helper
 {
-
-    /** @var Client */
+    /**
+     * @var Client
+     */
     protected $multichain;
 
+    /**
+     * Helper constructor.
+     *
+     * @param $multichainClient
+     */
     public function __construct($multichainClient)
     {
         $this->multichain = $multichainClient;
@@ -15,10 +21,12 @@ class Helper
 
     /**
      * @param $assetTxId
+     *
      * @return bool
      */
     public function isAssetAvailable($assetTxId){
         $assetInfo = $this->getAssetInfoFromTxId($assetTxId);
+
         return !is_null($assetInfo["assetref"]);
     }
 
@@ -33,10 +41,12 @@ class Helper
 
     /**
      * @param $assetTxId
+     *
      * @return mixed
      */
     public function getAssetInfoFromTxId($assetTxId){
         $assetInfo = $this->multichain->listAssets($assetTxId);
+
         return $assetInfo[0];
     }
 
