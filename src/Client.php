@@ -39,13 +39,17 @@ class Client implements ClientInterface
     /**
      * Constructor
      *
-     * @param string $url Multichain JSON RPC url + port
+     * @param string $host
+     * @param int $port
      * @param string $username Multichain JSON RPC username
      * @param string $password Multichain JSON RPC password
      * @param integer $timeout HTTP timeout
+     * @internal param string $url Multichain JSON RPC url + port
      */
-    public function __construct($url, $username, $password, $timeout = 3)
+    public function __construct(string $host, int $port, string $username, string $password, int $timeout = 3)
     {
+        $url = sprintf('http://%s:%d', $host, $port);
+
         $this->jsonRPCClient = new JsonRPCClient($url);
         $httpClient = $this->jsonRPCClient->getHttpClient();
         $httpClient->withHeaders($this->headers);
