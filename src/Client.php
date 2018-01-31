@@ -11,7 +11,7 @@ use JsonRPC\Client as JsonRPCClient;
  *
  * @link http://www.multichain.com/developers/json-rpc-api/
  */
-class Client
+class Client implements ClientInterface
 {
     /**
      * The JsonRPC client used to call the multichain api
@@ -164,17 +164,7 @@ class Client
     }
 
     /**
-     * Adds address (or a full public key, or an array of either) to the wallet, without an associated private key.
-     * This creates one or more watch-only addresses, whose activity and balance can be retrieved via various APIs
-     * (e.g. with the includeWatchOnly parameter), but whose funds cannot be spent by this node. If rescan is true,
-     * the entire blockchain is checked for transactions relating to all addresses in the wallet, including the added ones.
-     * Returns null if successful.
-     *
-     * @param $address
-     * @param string $label
-     * @param bool $rescan
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
     public function importAddress($address, $label = "", $rescan = true)
     {
@@ -199,13 +189,7 @@ class Client
     }
 
     /**
-     * Generates one or more public/private key pairs, which are not stored in the wallet or drawn from the node’s key pool,
-     * ready for external key management. For each key pair, the address, pubkey (as embedded in transaction inputs) and privkey
-     * (used for signatures) is provided.
-     *
-     * @param int $count
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
     public function createKeypairs($count = 1)
     {
@@ -587,15 +571,7 @@ class Client
     }
 
     /**
-     * Lists information about the count most recent transactions related to address in this node’s wallet, including
-     * how they affected that address’s balance. Use skip to go back further in history and verbose to provide details
-     * of transaction inputs and outputs.
-     *
-     * @param $address
-     * @param int $count
-     * @param int $skip
-     * @param bool $verbose
-     * @return mixed
+     * {@inheritdoc}
      */
     public function listAddressTransactions($address, $count = 10, $skip = 0, $verbose = false)
     {
@@ -855,6 +831,22 @@ class Client
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function createRawSendFrom($fromAddress, $inputs, $data, $action = "")
+    {
+        return $this->jsonRPCClient->execute("createrawsendfrom", [$fromAddress, $inputs, $data, $action]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function signRawTransaction($txHex, $parentOutput, $privkey, $sigHashType = "ALL")
+    {
+        return $this->jsonRPCClient->execute("signrawtransaction", [$txHex, $parentOutput, $privkey, $sigHashType]);
+    }
+
+    /**
      * Returns information about the block with hash. If this is a MultiChain blockchain and format is true or omitted,
      * then the output includes a field miner showing the address of the miner of the block.
      *
@@ -926,19 +918,15 @@ class Client
         if (is_null($nativeAmount)) {
             $blockchainParams = $this->getBlockchainParams();
             $nativeAmount = $blockchainParams["minimum-per-output"];
+
             return $nativeAmount;
         }
+
         return $nativeAmount;
     }
 
     /**
-     * Submits raw transaction (serialized, hex-encoded) to local node and network.
-     * Returns the transaction hash in hex
-     *
-     * @param $hex
-     * @param bool $allowHighFees
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
     public function sendRawTransaction($hex, $allowHighFees = false)
     {
