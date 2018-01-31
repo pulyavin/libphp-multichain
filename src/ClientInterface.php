@@ -12,6 +12,18 @@ namespace pulyavin\Multichain;
 interface ClientInterface
 {
     /**
+     * Returns a list of all the asset balances for address in this node’s wallet, with at least minconf confirmations.
+     * Use includeLocked to include unspent outputs which have been locked, e.g. by a call to preparelockunspent.
+     *
+     * @param $address
+     * @param int $minConf
+     * @param bool $includeLocked
+     *
+     * @return mixed
+     */
+    public function getAddressBalances($address, $minConf = 1, $includeLocked = false);
+
+    /**
      * Generates one or more public/private key pairs, which are not stored in the wallet or drawn from the node’s key pool,
      * ready for external key management. For each key pair, the address, pubkey (as embedded in transaction inputs) and privkey
      * (used for signatures) is provided.

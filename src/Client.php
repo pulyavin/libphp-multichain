@@ -358,14 +358,7 @@ class Client implements ClientInterface
     }
 
     /**
-     * Returns a list of all the asset balances for address in this node’s wallet, with at least minconf confirmations.
-     * Use includeLocked to include unspent outputs which have been locked, e.g. by a call to preparelockunspent.
-     *
-     * @param $address
-     * @param int $minConf
-     * @param bool $includeLocked
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
     public function getAddressBalances($address, $minConf = 1, $includeLocked = false)
     {
