@@ -1,7 +1,19 @@
 {
-  "name": "kunstmaan/libphp-multichain",
+  "name": "pulyavin/multichain",
   "description": "Unofficial PHP library for interacting with the Multichain JsonRPC interface",
   "license": "MIT",
+  "authors": [
+    {
+      "name": "Kunstmaan",
+      "role": "Developer"
+    },
+    {
+      "name": "Artemiy Pulyavin",
+      "email": "artemiy@pulyavin.ru",
+      "homepage": "https://pulyavin.ru",
+      "role": "Developer"
+    }
+  ],
   "require": {
     "php": ">=5.4.0",
     "fguillot/json-rpc": "~v1.2.3"
@@ -13,8 +25,8 @@
     "bin-dir": "bin"
   },
   "autoload": {
-    "psr-0": {
-      "": "src"
+    "psr-4": {
+      "pulyavin\\Multichain\\": ""
     }
   }
 }

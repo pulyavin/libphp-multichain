@@ -1,18 +1,18 @@
 <?php
 
-namespace be\kunstmaan\multichain;
+namespace pulyavin\Multichain;
 
 use JsonRPC\Client as JsonRPCClient;
 
 /**
- * Class MultichainClient
+ * Class Client
  *
- * @package be\kunstmaan\multichain
+ * @package pulyavin\Multichain
+ *
  * @link http://www.multichain.com/developers/json-rpc-api/
  */
-class MultichainClient
+class Client
 {
-
     /**
      * The JsonRPC client used to call the multichain api
      *
@@ -54,12 +54,12 @@ class MultichainClient
 
     /**
      * @param boolean $debug
-     * @return MultichainClient
+     * @return Client
      */
     public function setDebug($debug)
     {
         $this->debug = $debug;
-        if($debug){
+        if ($debug) {
             $httpClient = $this->jsonRPCClient->getHttpClient();
             $httpClient->withDebug();
         }
@@ -125,7 +125,8 @@ class MultichainClient
      * @param $address
      * @return mixed
      */
-    public function dumpPrivateKey($address){
+    public function dumpPrivateKey($address)
+    {
         return $this->jsonRPCClient->execute("dumpprivkey", array($address));
     }
 
@@ -139,7 +140,8 @@ class MultichainClient
      * @param bool $rescan
      * @return mixed
      */
-    public function importPrivateKey($privkey, $label="", $rescan=true){
+    public function importPrivateKey($privkey, $label = "", $rescan = true)
+    {
 
         return $this->jsonRPCClient->execute("importprivkey", array($privkey, $label, $rescan));
     }
@@ -147,24 +149,25 @@ class MultichainClient
 
     /**
      * Creates a pay-to-scripthash (P2SH) multisig address and adds it to the wallet. Funds sent to this address
-     * can only be spent by transactions signed by nrequired of the specified keys. Each key can be a full public key, 
-     * or an address if the corresponding key is in the node’s wallet. (Public keys for a wallet’s addresses can be 
+     * can only be spent by transactions signed by nrequired of the specified keys. Each key can be a full public key,
+     * or an address if the corresponding key is in the node’s wallet. (Public keys for a wallet’s addresses can be
      * obtained using the getaddresses call with verbose=true.) Returns the P2SH address.
-     * 
+     *
      * @param int $nRequired
      * @param array $addresses
      * @return mixed
      */
-    public function addMultisigAddress($nRequired, $addresses) {
+    public function addMultisigAddress($nRequired, $addresses)
+    {
 
         return $this->jsonRPCClient->execute("addmultisigaddress", array($nRequired, $addresses));
     }
 
     /**
-     * Adds address (or a full public key, or an array of either) to the wallet, without an associated private key. 
-     * This creates one or more watch-only addresses, whose activity and balance can be retrieved via various APIs 
-     * (e.g. with the includeWatchOnly parameter), but whose funds cannot be spent by this node. If rescan is true, 
-     * the entire blockchain is checked for transactions relating to all addresses in the wallet, including the added ones. 
+     * Adds address (or a full public key, or an array of either) to the wallet, without an associated private key.
+     * This creates one or more watch-only addresses, whose activity and balance can be retrieved via various APIs
+     * (e.g. with the includeWatchOnly parameter), but whose funds cannot be spent by this node. If rescan is true,
+     * the entire blockchain is checked for transactions relating to all addresses in the wallet, including the added ones.
      * Returns null if successful.
      *
      * @param $address
@@ -172,13 +175,14 @@ class MultichainClient
      * @param bool $rescan
      * @return mixed
      */
-    public function importAddress($address, $label="", $rescan=true) {
+    public function importAddress($address, $label = "", $rescan = true)
+    {
         return $this->jsonRPCClient->execute("importaddress", array($address, $label, $rescan));
     }
 
     /**
-     * Returns information about the addresses in the wallet. Provide one or more addresses (comma-delimited or as an array) 
-     * to retrieve information about specific addresses only, or use * for all addresses in the wallet. Use count and start 
+     * Returns information about the addresses in the wallet. Provide one or more addresses (comma-delimited or as an array)
+     * to retrieve information about specific addresses only, or use * for all addresses in the wallet. Use count and start
      * to retrieve part of the list only, with negative start values (like the default) indicating the most recently created addresses.
      *
      * @param $addresses
@@ -187,32 +191,35 @@ class MultichainClient
      * @param string $start
      * @return mixed
      */
-    public function listAddresses($addresses="*", $verbose=false, $count="MAX", $start="-count") {
+    public function listAddresses($addresses = "*", $verbose = false, $count = "MAX", $start = "-count")
+    {
         return $this->jsonRPCClient->execute("listaddresses", array($addresses, $verbose, $count, $start));
     }
 
     /**
-     * Generates one or more public/private key pairs, which are not stored in the wallet or drawn from the node’s key pool, 
-     * ready for external key management. For each key pair, the address, pubkey (as embedded in transaction inputs) and privkey 
+     * Generates one or more public/private key pairs, which are not stored in the wallet or drawn from the node’s key pool,
+     * ready for external key management. For each key pair, the address, pubkey (as embedded in transaction inputs) and privkey
      * (used for signatures) is provided.
      *
      * @param int $count
      * @return mixed
      */
-    public function createKeypairs($count=1) {
+    public function createKeypairs($count = 1)
+    {
         return $this->jsonRPCClient->execute("createkeypairs", array($count));
     }
 
     /**
-     * Creates a pay-to-scripthash (P2SH) multisig address. Funds sent to this address can only be spent by transactions signed by 
-     * nrequired of the specified keys. Each key can be a full hexadecimal public key, or an address if the corresponding key is 
+     * Creates a pay-to-scripthash (P2SH) multisig address. Funds sent to this address can only be spent by transactions signed by
+     * nrequired of the specified keys. Each key can be a full hexadecimal public key, or an address if the corresponding key is
      * in the node’s wallet. Returns an object containing the P2SH address and corresponding redeem script.
-     * 
+     *
      * @param int $nRequired
      * @param array $addresses
      * @return mixed
      */
-    public function createMultisig($nRequired, $addresses) {
+    public function createMultisig($nRequired, $addresses)
+    {
 
         return $this->jsonRPCClient->execute("createmultisig", array($nRequired, $addresses));
     }
@@ -503,7 +510,7 @@ class MultichainClient
      * @param bool $open
      * @return mixed
      */
-    public function issue($address, $name, $qty, $units = 1, $nativeAmount = 0, $custom = null, $open=false)
+    public function issue($address, $name, $qty, $units = 1, $nativeAmount = 0, $custom = null, $open = false)
     {
         $params = array($address, array('name' => $name, 'open' => $open), $qty, $units, $nativeAmount);
         if (!is_null($custom)) {
@@ -527,7 +534,8 @@ class MultichainClient
      * @param null $custom
      * @return mixed
      */
-    public function issueMore($address, $asset, $qty, $nativeAmount=0, $custom = null){
+    public function issueMore($address, $asset, $qty, $nativeAmount = 0, $custom = null)
+    {
         $params = array($address, $asset, $qty, $nativeAmount);
         if (!is_null($custom)) {
             $params[] = $custom;

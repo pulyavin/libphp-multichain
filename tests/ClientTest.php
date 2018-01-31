@@ -1,21 +1,21 @@
 <?php
 
-use be\kunstmaan\multichain\MultichainClient;
-use be\kunstmaan\multichain\MultichainHelper;
+use pulyavin\Multichain\Client;
+use pulyavin\Multichain\Helper;
 
-class MultichainClientTest extends \PHPUnit_Framework_TestCase
+class ClientTest extends \PHPUnit_Framework_TestCase
 {
 
-    /** @var MultichainClient */
+    /** @var Client */
     protected $multichain;
 
-    /** @var  MultichainHelper */
+    /** @var  Helper */
     protected $helper;
 
     public function setUp()
     {
-        $this->multichain = new MultichainClient(getenv('JSON_RPC_URL'), getenv('JSON_RPC_USERNAME'), getenv('JSON_RPC_PASSWORD'), 3);
-        $this->helper = new MultichainHelper($this->multichain);
+        $this->multichain = new Client(getenv('JSON_RPC_URL'), getenv('JSON_RPC_USERNAME'), getenv('JSON_RPC_PASSWORD'), 3);
+        $this->helper = new Helper($this->multichain);
     }
 
     /**

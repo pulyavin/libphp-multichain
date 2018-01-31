@@ -1,13 +1,11 @@
 <?php
 
+namespace pulyavin\Multichain;
 
-namespace be\kunstmaan\multichain;
-
-
-class MultichainHelper
+class Helper
 {
 
-    /** @var MultichainClient */
+    /** @var Client */
     protected $multichain;
 
     public function __construct($multichainClient)
