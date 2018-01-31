@@ -833,7 +833,7 @@ class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function createRawSendFrom($fromAddress, $inputs, $data, $action = "")
+    public function createRawSendFrom($fromAddress, $inputs, $data = [], $action = "")
     {
         return $this->jsonRPCClient->execute("createrawsendfrom", [$fromAddress, $inputs, $data, $action]);
     }
